@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
+import { ToastContainer } from 'react-toastify';
 import fetchImagesWithQuery from '../../Services/fetchImages';
 import Searchbar from '../Searchbar';
 import Button from '../Button';
+import ImageGallery from '../ImageGallery';
 import { Container } from './App.styled';
 
 export class App extends Component {
@@ -16,7 +18,7 @@ export class App extends Component {
     console.log(data);
     this.setState({
       page: 1,
-      query: data.search,
+      query: data.search.trim(),
       items: [],
       loading: false,
     });
@@ -29,34 +31,34 @@ export class App extends Component {
   };
 
   async componentDidUpdate(_, prevState) {
-    if (
-      prevState.page !== this.state.page ||
-      prevState.query !== this.state.query
-    ) {
-      this.setState({ isLoading: true });
+    const { page, query } = this.state;
+    const { page: prevPage, query: prevQuery } = prevState;
+    if (prevPage !== page || prevQuery !== query) {
+      this.setState({ loading: true });
       try {
-        const images = await fetchImagesWithQuery(
-          this.state.query,
-          this.state.page
-        );
+        const images = await fetchImagesWithQuery(query, page);
         console.log(images);
         this.setState(({ items }) => ({
           items: [...items, ...images],
         }));
       } catch (error) {
-        this.setState({ error });
+        console.log(error);
       } finally {
-        this.setState({ isLoading: false });
+        this.setState({ loading: false });
       }
     }
   }
 
   render() {
+    const { loading, items } = this.state;
+
     return (
       <Container>
-        <Searchbar onSubmit={this.formSubmitHandler} />;
-        {this.state.loading && <h2>Loading...</h2>}
-        <Button loadMore={this.loadMore} />{' '}
+        <Searchbar onSubmit={this.formSubmitHandler} />
+        {loading && <h2>Loading...</h2>}
+        <ImageGallery items={items} />
+        <Button loadMore={this.loadMore} />
+        <ToastContainer />
       </Container>
     );
   }
