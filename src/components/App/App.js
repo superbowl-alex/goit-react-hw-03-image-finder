@@ -11,16 +11,15 @@ export class App extends Component {
     page: 1,
     query: '',
     items: [],
-    loading: false,
+    ISloading: false,
   };
 
   formSubmitHandler = data => {
-    console.log(data);
     this.setState({
       page: 1,
       query: data.search.trim(),
       items: [],
-      loading: false,
+      ISloading: false,
     });
   };
 
@@ -34,28 +33,27 @@ export class App extends Component {
     const { page, query } = this.state;
     const { page: prevPage, query: prevQuery } = prevState;
     if (prevPage !== page || prevQuery !== query) {
-      this.setState({ loading: true });
+      this.setState({ ISloading: true });
       try {
         const images = await fetchImagesWithQuery(query, page);
-        console.log(images);
         this.setState(({ items }) => ({
           items: [...items, ...images],
         }));
       } catch (error) {
         console.log(error);
       } finally {
-        this.setState({ loading: false });
+        this.setState({ ISloading: false });
       }
     }
   }
 
   render() {
-    const { loading, items } = this.state;
+    const { ISloading, items } = this.state;
 
     return (
       <Container>
         <Searchbar onSubmit={this.formSubmitHandler} />
-        {loading && <h2>Loading...</h2>}
+        {ISloading && <h2>Loading...</h2>}
         <ImageGallery items={items} />
         <Button loadMore={this.loadMore} />
         <ToastContainer />
