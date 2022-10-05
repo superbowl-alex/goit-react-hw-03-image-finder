@@ -2,7 +2,10 @@ import React, { Component } from 'react';
 import { Audio } from 'react-loader-spinner';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import fetchImagesWithQuery from '../../Services/fetchImages';
+import {
+  fetchImagesWithQuery,
+  HITS_PER_PAGE,
+} from '../../Services/fetchImages';
 import Searchbar from '../Searchbar';
 import Button from '../Button';
 import ImageGallery from '../ImageGallery';
@@ -16,6 +19,7 @@ export class App extends Component {
     items: [],
     ISloading: false,
     error: false,
+    endOfCollection: false,
   };
 
   formSubmitHandler = data => {
@@ -25,6 +29,7 @@ export class App extends Component {
       items: [],
       ISloading: false,
       error: false,
+      endOfCollection: false,
     });
   };
 
@@ -40,8 +45,19 @@ export class App extends Component {
     if (prevPage !== page || prevQuery !== query) {
       this.setState({ ISloading: true });
       try {
-        const images = await fetchImagesWithQuery(query, page);
+        const response = await fetchImagesWithQuery(query, page);
+        const images = response.hits;
         this.validationData(images);
+        const totalPages = Math.ceil(response.totalHits / HITS_PER_PAGE);
+        if (page === totalPages) {
+          this.setState({ endOfCollection: true });
+          toast.info(
+            "We're sorry, but you've reached the end of search results.",
+            {
+              theme: 'colored',
+            }
+          );
+        }
         this.setState(({ items }) => ({
           items: [...items, ...images],
         }));
@@ -66,7 +82,7 @@ export class App extends Component {
   };
 
   render() {
-    const { items, ISloading, error } = this.state;
+    const { items, ISloading, error, endOfCollection } = this.state;
 
     return (
       <Container>
@@ -78,7 +94,9 @@ export class App extends Component {
             <Audio color="#3f51b5" />
           </WrapSpinner>
         )}
-        {items.length > 0 && <Button loadMore={this.loadMore} />}
+        {items.length > 0 && !endOfCollection && (
+          <Button loadMore={this.loadMore} />
+        )}
         <ToastContainer />
       </Container>
     );
