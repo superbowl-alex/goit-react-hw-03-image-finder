@@ -22,23 +22,6 @@ export class App extends Component {
     endOfCollection: false,
   };
 
-  formSubmitHandler = data => {
-    this.setState({
-      page: 1,
-      query: data.search.trim(),
-      items: [],
-      ISloading: false,
-      error: false,
-      endOfCollection: false,
-    });
-  };
-
-  loadMore = () => {
-    this.setState(prevState => ({
-      page: prevState.page + 1,
-    }));
-  };
-
   async componentDidUpdate(_, prevState) {
     const { page, query } = this.state;
     const { page: prevPage, query: prevQuery } = prevState;
@@ -69,6 +52,23 @@ export class App extends Component {
       }
     }
   }
+
+  formSubmitHandler = data => {
+    this.setState({
+      page: 1,
+      query: data.search.trim(),
+      items: [],
+      ISloading: false,
+      error: false,
+      endOfCollection: false,
+    });
+  };
+
+  loadMore = () => {
+    this.setState(prevState => ({
+      page: prevState.page + 1,
+    }));
+  };
 
   validationData = data => {
     if (data.length === 0) {
