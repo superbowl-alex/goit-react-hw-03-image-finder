@@ -6,3 +6,9 @@ export const Container = styled.div`
   grid-gap: 16px;
   padding-bottom: 24px;
 `;
+export const WrapSpinner = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #3f51b5;
+`;

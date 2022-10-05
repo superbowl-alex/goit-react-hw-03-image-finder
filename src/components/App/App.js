@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
-import { ToastContainer } from 'react-toastify';
+import { Audio } from 'react-loader-spinner';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import fetchImagesWithQuery from '../../Services/fetchImages';
 import Searchbar from '../Searchbar';
 import Button from '../Button';
 import ImageGallery from '../ImageGallery';
-import { Container } from './App.styled';
+import ErrorMessage from '../ErrorMessage';
+import { Container, WrapSpinner } from './App.styled';
 
 export class App extends Component {
   state = {
@@ -12,6 +15,7 @@ export class App extends Component {
     query: '',
     items: [],
     ISloading: false,
+    error: false,
   };
 
   formSubmitHandler = data => {
@@ -20,6 +24,7 @@ export class App extends Component {
       query: data.search.trim(),
       items: [],
       ISloading: false,
+      error: false,
     });
   };
 
@@ -36,10 +41,12 @@ export class App extends Component {
       this.setState({ ISloading: true });
       try {
         const images = await fetchImagesWithQuery(query, page);
+        this.validationData(images);
         this.setState(({ items }) => ({
           items: [...items, ...images],
         }));
       } catch (error) {
+        this.setState({ error: true });
         console.log(error);
       } finally {
         this.setState({ ISloading: false });
@@ -47,15 +54,31 @@ export class App extends Component {
     }
   }
 
+  validationData = data => {
+    if (data.length === 0) {
+      toast.warn(
+        ' Sorry, there are no images matching your search query. Please try again.',
+        {
+          theme: 'colored',
+        }
+      );
+    }
+  };
+
   render() {
-    const { ISloading, items } = this.state;
+    const { items, ISloading, error } = this.state;
 
     return (
       <Container>
         <Searchbar onSubmit={this.formSubmitHandler} />
-        {ISloading && <h2>Loading...</h2>}
         <ImageGallery items={items} />
-        <Button loadMore={this.loadMore} />
+        {error && <ErrorMessage />}
+        {ISloading && (
+          <WrapSpinner>
+            <Audio color="#3f51b5" />
+          </WrapSpinner>
+        )}
+        {items.length > 0 && <Button loadMore={this.loadMore} />}
         <ToastContainer />
       </Container>
     );

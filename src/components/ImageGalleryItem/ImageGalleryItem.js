@@ -5,7 +5,7 @@ import { GalleryItem, GallerryItemImage } from './ImageGalleryItem.styled';
 const ImageGalleryItem = ({ item }) => {
   return (
     <GalleryItem className="gallery-item">
-      <GallerryItemImage src={item.webformatURL} alt="" />
+      <GallerryItemImage src={item.webformatURL} alt={item.tags} />
     </GalleryItem>
   );
 };
