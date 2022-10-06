@@ -10,30 +10,31 @@ export const SearchHeader = styled.header`
   justify-content: center;
   align-items: center;
   min-height: 64px;
-  padding-right: 24px;
-  padding-left: 24px;
-  padding-top: 12px;
-  padding-bottom: 12px;
-  color: #fff;
-  background-color: #3f51b5;
+  padding-top: ${p => p.theme.space[4]}px;
+  padding-bottom: ${p => p.theme.space[4]}px;
+  color: ${p => p.theme.colors.white};
+  background-color: ${p => p.theme.colors.secondaryBacground};
   box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2),
     0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
 `;
+
 export const SearchForm = styled(Form)`
   display: flex;
   align-items: center;
   width: 100%;
   max-width: 600px;
-  background-color: #fff;
-  border-radius: 3px;
+  background-color: ${p => p.theme.colors.white};
+  border-radius: ${p => p.theme.radii.normal};
   overflow: hidden;
 `;
+
 export const SearchFormButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
   width: 48px;
   height: 48px;
+  background-color: ${p => p.theme.colors.primaryBacground};
   border: 0;
   opacity: 0.6;
   transition: opacity 250ms cubic-bezier(0.4, 0, 0.2, 1);
@@ -49,14 +50,16 @@ export const SearchFormInput = styled(Field)`
   display: inline-block;
   width: 100%;
   font: inherit;
-  font-size: 20px;
+  font-size: ${p => p.theme.fontSizes.m};
+  color: ${p => p.theme.colors.buttonHoverColor};
   border: none;
   outline: none;
-  padding-left: 4px;
-  padding-right: 4px;
+  padding-left: ${p => p.theme.space[2]}px;
+  padding-right: ${p => p.theme.space[2]}px;
 
   &::placeholder {
     font: inherit;
-    font-size: 18px;
+    font-size: ${p => p.theme.fontSizes.s};
+    color: ${p => p.theme.colors.buttonColor};
   }
 `;

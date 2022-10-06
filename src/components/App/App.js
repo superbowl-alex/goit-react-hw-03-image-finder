@@ -93,7 +93,7 @@ export class App extends Component {
         {error && <ErrorMessage />}
         {isLoading && (
           <WrapSpinner>
-            <Audio color="#3f51b5" />
+            <Audio color="#379683" />
           </WrapSpinner>
         )}
         {items.length > 0 && !endOfCollection && (

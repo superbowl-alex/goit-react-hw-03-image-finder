@@ -25,7 +25,7 @@ const GlobalStyles = () => {
             'Droid Sans', 'Helvetica Neue', sans-serif;
           -webkit-font-smoothing: antialiased;
           -moz-osx-font-smoothing: grayscale;
-          background-color: rgb(229, 246, 246);
+          background-color: #edf5e1;
         }
 
         h1,
