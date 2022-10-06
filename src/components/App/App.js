@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Audio } from 'react-loader-spinner';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import GlobalStyles from 'GlobalStyles';
 import {
   fetchImagesWithQuery,
   HITS_PER_PAGE,
@@ -17,7 +18,7 @@ export class App extends Component {
     page: 1,
     query: '',
     items: [],
-    ISloading: false,
+    isLoading: false,
     error: false,
     endOfCollection: false,
   };
@@ -26,7 +27,7 @@ export class App extends Component {
     const { page, query } = this.state;
     const { page: prevPage, query: prevQuery } = prevState;
     if (prevPage !== page || prevQuery !== query) {
-      this.setState({ ISloading: true });
+      this.setState({ isLoading: true });
       try {
         const response = await fetchImagesWithQuery(query, page);
         const images = response.hits;
@@ -48,7 +49,7 @@ export class App extends Component {
         this.setState({ error: true });
         console.log(error);
       } finally {
-        this.setState({ ISloading: false });
+        this.setState({ isLoading: false });
       }
     }
   }
@@ -58,7 +59,7 @@ export class App extends Component {
       page: 1,
       query: data.search.trim(),
       items: [],
-      ISloading: false,
+      isLoading: false,
       error: false,
       endOfCollection: false,
     });
@@ -82,20 +83,21 @@ export class App extends Component {
   };
 
   render() {
-    const { items, ISloading, error, endOfCollection } = this.state;
+    const { items, isLoading, error, endOfCollection } = this.state;
 
     return (
       <Container>
+        <GlobalStyles />
         <Searchbar onSubmit={this.formSubmitHandler} />
         <ImageGallery items={items} />
         {error && <ErrorMessage />}
-        {ISloading && (
+        {isLoading && (
           <WrapSpinner>
             <Audio color="#3f51b5" />
           </WrapSpinner>
         )}
         {items.length > 0 && !endOfCollection && (
-          <Button loadMore={this.loadMore} />
+          <Button loadMore={this.loadMore} isSubmitting={isLoading} />
         )}
         <ToastContainer />
       </Container>
