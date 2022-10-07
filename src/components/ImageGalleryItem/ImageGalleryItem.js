@@ -14,8 +14,12 @@ export class ImageGalleryItem extends Component {
     const { item } = this.props;
     const { isModalOpen } = this.state;
     return (
-      <GalleryItem onClick={this.toggleModal}>
-        <GallerryItemImage src={item.webformatURL} alt={item.tags} />
+      <GalleryItem>
+        <GallerryItemImage
+          src={item.webformatURL}
+          alt={item.tags}
+          onClick={this.toggleModal}
+        />
         {isModalOpen && <Modal image={item} toggleModal={this.toggleModal} />}
       </GalleryItem>
     );

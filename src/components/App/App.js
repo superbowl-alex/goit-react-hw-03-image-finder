@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Audio } from 'react-loader-spinner';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import GlobalStyles from 'GlobalStyles';
@@ -11,7 +10,8 @@ import Searchbar from '../Searchbar';
 import Button from '../Button';
 import ImageGallery from '../ImageGallery';
 import ErrorMessage from '../ErrorMessage';
-import { Container, WrapSpinner } from './App.styled';
+import Loader from '../Loader';
+import { Container } from './App.styled';
 
 export class App extends Component {
   state = {
@@ -91,11 +91,7 @@ export class App extends Component {
         <Searchbar onSubmit={this.formSubmitHandler} />
         <ImageGallery items={items} />
         {error && <ErrorMessage />}
-        {isLoading && (
-          <WrapSpinner>
-            <Audio color="#379683" />
-          </WrapSpinner>
-        )}
+        {isLoading && <Loader />}
         {items.length > 0 && !endOfCollection && (
           <Button loadMore={this.loadMore} isSubmitting={isLoading} />
         )}

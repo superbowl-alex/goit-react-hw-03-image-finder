@@ -21,7 +21,7 @@ export class Modal extends Component {
   };
 
   handleBackDropClick = e => {
-    if (e.currentTarget !== e.target) {
+    if (e.currentTarget === e.target) {
       this.props.toggleModal();
     }
   };
