@@ -6,6 +6,11 @@ const GlobalStyles = () => {
       styles={css`
         @import-normalize; /* bring in normalize.css styles */
 
+        :root {
+          --toastify-color-info: #379683;
+          --toastify-color-warning: #05386b;
+        }
+
         html {
           box-sizing: border-box;
           width: 100vw;
@@ -26,6 +31,20 @@ const GlobalStyles = () => {
           -webkit-font-smoothing: antialiased;
           -moz-osx-font-smoothing: grayscale;
           background-color: #edf5e1;
+        }
+
+        body::-webkit-scrollbar {
+          width: 16px;
+          height: 0;
+        }
+
+        body::-webkit-scrollbar-track {
+          background: #edf5e1;
+        }
+
+        body::-webkit-scrollbar-thumb {
+          background-color: #379683;
+          border-radius: 20px;
         }
 
         h1,

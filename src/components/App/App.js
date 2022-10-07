@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import OnlyScroll from 'only-scrollbar';
 import GlobalStyles from 'GlobalStyles';
 import {
   fetchImagesWithQuery,
@@ -12,6 +13,11 @@ import ImageGallery from '../ImageGallery';
 import ErrorMessage from '../ErrorMessage';
 import Loader from '../Loader';
 import { Container } from './App.styled';
+
+// Creating an instance of a class OnlyScroll (adds inertia for increased smoothness)
+new OnlyScroll(document.scrollingElement, {
+  damping: 0.8,
+});
 
 export class App extends Component {
   state = {
@@ -33,15 +39,7 @@ export class App extends Component {
         const images = response.hits;
         this.validationData(images);
         const totalPages = Math.ceil(response.totalHits / HITS_PER_PAGE);
-        if (page === totalPages) {
-          this.setState({ endOfCollection: true });
-          toast.info(
-            "We're sorry, but you've reached the end of search results.",
-            {
-              theme: 'colored',
-            }
-          );
-        }
+        this.checkEndCollection(page, totalPages);
         this.setState(({ items }) => ({
           items: [...items, ...images],
         }));
@@ -79,6 +77,15 @@ export class App extends Component {
           theme: 'colored',
         }
       );
+    }
+  };
+
+  checkEndCollection = (currentPage, total) => {
+    if (currentPage === total) {
+      this.setState({ endOfCollection: true });
+      toast.info("We're sorry, but you've reached the end of search results.", {
+        theme: 'colored',
+      });
     }
   };
 
