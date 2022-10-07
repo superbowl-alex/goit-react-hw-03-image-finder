@@ -32,10 +32,10 @@ export const SearchFormButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
+  border: none;
   width: 48px;
   height: 48px;
   background-color: ${p => p.theme.colors.primaryBacground};
-  border: 0;
   opacity: 0.6;
   transition: opacity 250ms cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
@@ -43,6 +43,7 @@ export const SearchFormButton = styled.button`
 
   &:hover {
     opacity: 1;
+    background-color: ${p => p.theme.colors.buttonColor};
   }
 `;
 
