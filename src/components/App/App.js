@@ -32,7 +32,9 @@ export class App extends Component {
   async componentDidUpdate(_, prevState) {
     const { page, query } = this.state;
     const { page: prevPage, query: prevQuery } = prevState;
-    if (prevPage !== page || prevQuery !== query) {
+    if (query === '') {
+      return;
+    } else if (prevPage !== page || prevQuery !== query) {
       this.setState({ isLoading: true });
       try {
         const response = await fetchImagesWithQuery(query, page);
